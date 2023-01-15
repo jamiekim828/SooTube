@@ -1,5 +1,6 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { InitialState } from '../types';
+import { getHomePageVideos } from './reducers/getHomePageVideos';
 
 const initialState: InitialState = {
   videos: [],
@@ -13,7 +14,12 @@ const SooTubeSlice = createSlice({
   name: 'sootube',
   initialState,
   reducers: {},
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder.addCase(getHomePageVideos.fulfilled, (state, action) => {
+      state.videos = action.payload.parsedData;
+      state.nextPageToken = action.payload.nextPageToken;
+    });
+  },
 });
 
 export const store = configureStore({
